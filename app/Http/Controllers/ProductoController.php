@@ -6,14 +6,23 @@ use App\Generico\Carrito;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
+use App\Policies\ProductoPolicy;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 
 class ProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use AuthorizesRequests;
+
     public function index()
     {
+        if (!Gate::allows('viewAny-producto')){
+            abort(403, 'maricon');
+        }
+        // $this->authorize('viewAny', Producto::class);
         return view('productos.index', [
             'productos' => Producto::all(),
             'carrito' => Carrito::carrito(),

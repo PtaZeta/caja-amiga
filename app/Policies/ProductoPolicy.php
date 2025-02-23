@@ -6,14 +6,16 @@ use App\Models\Producto;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
+
 class ProductoPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+
+    public function viewAny(User $user)
     {
-        return false;
+        return $user->name === 'admin';
     }
 
     /**
