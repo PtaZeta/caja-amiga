@@ -95,12 +95,14 @@ Route::post('/comprar', function (Request $request) {
         session()->put('carrito', new Carrito());
 
         DB::commit();
-        return redirect()->route('home')->with('success', 'Compra realizada con éxito.');
+        return redirect()->route('tickets.show', $ticketId)->with('error', 'Error en la compra.');
 
     } catch (\Exception $e) {
         DB::rollback();
         Log::error('Error en la compra: ' . $e->getMessage());
-        return redirect()->route('caja')->with('error', 'Error en la compra.');
+        return redirect()->route('tickets.show', [
+            'ticket' => $ticketId,
+        ])->with('error', 'Error en la compra.');
     }
 
 })->middleware('auth')->name('comprar');

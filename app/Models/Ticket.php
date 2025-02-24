@@ -14,4 +14,9 @@ class Ticket extends Model
     {
         return $this->belongsToMany(Producto::class, 'lineas');
     }
+
+    public function precioTotal($productos)
+    {
+        return $productos->sum('precio');
+    }
 }
